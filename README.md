@@ -1,10 +1,10 @@
-# API-Proxy-Notes
+# API-Notes
 
 ## Good resource
 
 1. [The battle for your api proxy](http://blog.apievangelist.com/2011/06/11/the-battle-for-your-api-proxy/)
 
-## API
+## API Proxy
 
 Every day an API can receive thousands or potentially millions of calls. Before the API can process these requests and returns a response, it has to potentially tackle a huge laundry list of functionalities:
 
