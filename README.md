@@ -83,3 +83,45 @@ or:
 ## AWS
 
 [AWS](https://www.youtube.com/watch?v=X0wU-HTjv0g)
+
+## Hash Algorithm Aka Hash Function
+
+### definitions
+
+Hash algorithms are used widely in computer science field. But with difference purposes, different hash algorithm is applied. For example, 
+hash function that computes hash key for data structure hashtable in programming languages is different from hash function that computes (checksum)[https://en.wikipedia.org/wiki/Checksum] to verify data integrity. The type of hash algorithm like checksum algorithm is also called (crytographic hash alogorithm)[https://en.wikipedia.org/wiki/Cryptographic_hash_function]. It widely used for check message integrity in network. Crytographic hash alogorithm includes MD5, (SHA0, SHA1, SHA2, SHA3)[https://en.wikipedia.org/wiki/Secure_Hash_Algorithms] and so on. 
+
+The ideal cryptographic hash function has five main properties:
+
+- it is deterministic so the same message always results in the same hash
+- it is quick to compute the hash value for any given message
+- it is infeasible to generate a message from its hash value except by trying all possible messages
+- a small change to a message should change the hash value so extensively that the new hash value appears uncorrelated with the old hash value
+- it is infeasible to find two different messages with the same hash value
+
+## MAC, HMAC
+
+In cryptography, a **message authentication code (MAC)**, sometimes known as a tag, is a short piece of information used to authenticate a message. One of the famous one is **(keyed-hash message authentication code (HMAC))[https://www.youtube.com/watch?v=NU923LkfuvE]**.
+
+Basically, MAC is to prove the integrity of a message. That is,
+
+- Send message over an untrusted network
+- Message: engrypted or not
+- Prove it has not been altered
+
+HMAC uses crytographic hash alogorithm to generate a MAC, that is,
+
+`HMAC(K, m) = H((K' xor opad) || H((K' xor ipad) || m))`
+
+where
+
+- `H` is a cryptographic hash function,
+- `K` is the secret key,
+- `m` is the message to be authenticated,
+- `K'` is another secret key, derived from the original key K (by padding K to the right with extra zeroes to the input block size of the hash function, or by hashing K if it is longer than that block size),
+- `||` denotes concatenation,
+- `xor` denotes exclusive or,
+- `opad` is the outer padding (0x5c5c5c…5c5c, one-block-long hexadecimal constant),
+- `ipad` is the inner padding (0x363636…3636, one-block-long hexadecimal constant).
+
+Another video demostrates HMAC, https://www.youtube.com/watch?v=0628oUIssFA
