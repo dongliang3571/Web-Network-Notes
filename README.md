@@ -84,6 +84,8 @@ or:
 
 [AWS](https://www.youtube.com/watch?v=X0wU-HTjv0g)
 
+[AWS S3 Rest API]http://czak.pl/2015/09/15/s3-rest-api-with-curl.html
+
 ## Hash Algorithm Aka Hash Function
 
 ### definitions
