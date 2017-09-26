@@ -50,7 +50,50 @@ A **WSDL** is an XML document that describes a web service. It actually stands f
 
   "You use SOAP just the same way that you would any PHP class. However, in this case the class does not exist in the local applications file system, but at a remote site accessed over http." ... "If we think of using a SOAP service as just another PHP class then the WSDL document is a list of all the available class methods and properties. "
 
+
+
 **REST** is an architectural style of networked systems and stands for Representational State Transfer. It's not a standard itself, but does use standards such as HTTP, URL, XML, etc.
+
+An architectural style called REST (Representational State Transfer) advocates that web applications should use HTTP as it was originally envisioned. Lookups should use GET requests. PUT, POST, and DELETE requests should be used for *mutation, creation, and deletion respectively *.
+
+REST proponents tend to favor URLs, such as
+
+http://myserver.com/catalog/item/1729
+but the REST architecture does not require these “pretty URLs”. A GET request with a parameter
+
+http://myserver.com/catalog?item=1729
+is every bit as RESTful.
+
+Keep in mind that GET requests should never be used for updating information. For example, a GET request for adding an item to a cart
+
+http://myserver.com/addToCart?cart=314159&item=1729
+would not be appropriate. GET requests should be idempotent. That is, issuing a request twice should be no different from issuing it once. That’s what makes the requests cacheable. An “add to cart” request is not idempotent—issuing it twice adds two copies of the item to the cart. A POST request is clearly appropriate in this context. Thus, even a RESTful web application needs its share of POST requests.
+
+(good resource)[https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming#answer-671132]
+
+(How I Explained REST to My Wife)[http://web.archive.org/web/20130116005443/http://tomayko.com/writings/rest-to-my-wife]
+
+REST provides a definition of a resource, which is what those things point to. A web page is a representation of a resource. 
+
+### what is hypermedia , hypermedia controls, hypermedia formats
+
+There's a lot of confusion about this, because most applications that call themselves REST don't use hypermedia and aren't REST at all.
+
+**Hypermedia** is a generalization of hypertext for content other than HTML. You can say hypertext is a subset of hypermedia. Hypermedia can be HTML in a browser, with all links, buttons and everything that's rendered so you can browse a website, or it can be a XML or JSON document intended to be parsed by an automated client who will also follow links and actions like a human would do with a browser, clicking rendered links and buttons.
+
+**HATEOAS** means the interaction of a client with a REST application must be driven by hypermedia, or to put it simply, the client should obtain all URIs for every resource it needs by following links in the representation of resources themselves, not by relying on out-of-band information, like URI patterns given in documentation, as many APIs do.
+
+This is simpler than it sounds. It just means that the interaction between a client and a REST application should be exactly like a human browsing a website. Take Stack Overflow itself for example. There are Users, Questions and Answers. When you want to see a list of your questions, you don't go to a documentation website, get an URI template for listing your questions, fill a placeholder with your user id and paste it on your brownser. You simply click on a link to another document described as the list of questions, and you don't even care about what the exact URI is. That's what HATEOAS means in practice.
+
+An **hypermedia format** defines the contract between client and server. It's the hyperlink-enabled data format you are using for a particular representation of a resource in an hypermedia application. For instance, if you have an User resource, you have to document what exactly clients should expect from a representation of that resource and how to parse the representation to extract the information. Before interacting with your API, your clients need to implement a parser to extract the information, they need to know what properties the resource has and what they mean, what link relations they should expect and what state transitions are available, etc.
+
+**Hypermedia controls** are the combinations of protocol methods and link relations in an hypermedia format that tells the client what state transitions are available and how to perform them. For instance, a Question might have a rel=post_answer link that expects an Answer representation as the payload of a POST method and will create a new Answer resource related to it.
+
+Once you have a set of hypermedia formats defined, you need a **domain specific media-type** to determine exactly what hypermedia format is being used for a particular interaction. A generic media-type like application/xml only tells the client how to parse the data format, it doesn't say anything about the information extracted by the parser. For instance, let's say a document has the media-type application/vnd.mycompany.user.v1+xml, the client knows it's a version 1.0 representation of the User resource in XML format. If you change the resource by adding or removing properties, links, etc, you can change the version number and clients won't break, since they can request the version they were implemented for by using the Accept header. You can also provide multiple formats for the same resource, like XML or JSON, and even a pretty human-readable representation in HTML.
+
+When you wrap everything together -- the underlying protocol, HTTP; the contracts defined by hypermedia formats and media types -- you have your Domain Application Protocol, which is the whole set of resources and available state transitions advertised by your application.
+
+Needless to say, 99% of the so-called REST APIs you'll find around the internet don't follow all of this. Most of them are simply HTTP APIs that follow some of the REST constraints, sometimes because they don't really need all of them, sometimes because that's what the developers thought REST really is.
 
 ## GET, POST, PUT and DELETE
 
