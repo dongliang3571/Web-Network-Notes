@@ -52,6 +52,35 @@ A **WSDL** is an XML document that describes a web service. It actually stands f
   
 https://msdn.microsoft.com/en-us/library/ms996486.aspx
 
+### Make SOAP request with curl
+
+Let’s create a SOAP envelope as below which is the SOAP request to be sent via curl. Create a file with the below content named “request.xml”. The SOAP envelope and the SOAP request parameters depend on your web service.
+
+```
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://schemas.conversesolutions.com/xsd/dmticta/v1">
+<soapenv:Header/>
+<soapenv:Body>
+<v1:GetVehicleLimitedInfo>
+<v1:vehicleNo>?</v1:vehicleNo>
+<v1:phoneNo>?</v1:phoneNo>
+</v1:GetVehicleLimitedInfo>
+</soapenv:Body>
+</soapenv:Envelope>
+```
+
+Let’s make a request using the curl command.
+
+```
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction: ACTION_YOU_WANT_TO_CALL" --data @FILE_NAME URL_OF_THE_SOAP_WEB_SERVICE_ENDPOINT
+```
+
+Below mentioned should be replaced according to your web service.
+
+1. ACTION_YOU_WANT_TO_CALL
+2. FILE_NAME
+3. URL_OF_THE_SOAP_WEB_SERVICE_ENDPOINT
+
+See the example below to get an idea.
 
 **REST** is an architectural style of networked systems and stands for Representational State Transfer. It's not a standard itself, but does use standards such as HTTP, URL, XML, etc.
 
