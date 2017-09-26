@@ -49,7 +49,8 @@ A **WSDL** is an XML document that describes a web service. It actually stands f
 **SOAP** is an XML-based protocol that lets you exchange info over a particular protocol (can be HTTP or SMTP, for example) between applications. It stands for Simple Object Access Protocol and uses XML for its messaging format to relay the information. [good resource](http://www.doublehops.com/2009/07/07/quick-tutorial-on-getting-started-with-soap-in-php/comment-page-1/)
 
   "You use SOAP just the same way that you would any PHP class. However, in this case the class does not exist in the local applications file system, but at a remote site accessed over http." ... "If we think of using a SOAP service as just another PHP class then the WSDL document is a list of all the available class methods and properties. "
-
+  
+https://msdn.microsoft.com/en-us/library/ms996486.aspx
 
 
 **REST** is an architectural style of networked systems and stands for Representational State Transfer. It's not a standard itself, but does use standards such as HTTP, URL, XML, etc.
@@ -74,6 +75,16 @@ would not be appropriate. GET requests should be idempotent. That is, issuing a 
 (How I Explained REST to My Wife)[http://web.archive.org/web/20130116005443/http://tomayko.com/writings/rest-to-my-wife]
 
 REST provides a definition of a resource, which is what those things point to. A web page is a representation of a resource. 
+
+### Difference between SOAP and REST
+
+https://stackoverflow.com/questions/19884295/soap-vs-rest-differences
+
+A **SOAP** client works like a custom desktop application, tightly coupled to the server. There's a rigid contract between client and server, and everything is expected to break if either side changes anything. You need constant updates following any change, but it's easier to ascertain if the contract is being followed.
+
+A **REST** client is more like a browser. It's a generic client that knows how to use a protocol and standardized methods, and an application has to fit inside that. You don't violate the protocol standards by creating extra methods, you leverage on the standard methods and create the actions with them on your media type. If done right, there's less coupling, and changes can be dealt with more gracefully
+
+In short, REST use `GET`, `PUT`, `POST`, `DELETE` as verbs(operations), but SOAP has to use it's own defined operations, could be `addUser`, `deleteUser`, `something else`.
 
 ### what is hypermedia , hypermedia controls, hypermedia formats
 
