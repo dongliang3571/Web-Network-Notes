@@ -50,7 +50,8 @@ A **WSDL** is an XML document that describes a web service. It actually stands f
 
   "You use SOAP just the same way that you would any PHP class. However, in this case the class does not exist in the local applications file system, but at a remote site accessed over http." ... "If we think of using a SOAP service as just another PHP class then the WSDL document is a list of all the available class methods and properties. "
   
-https://msdn.microsoft.com/en-us/library/ms996486.aspx
+[understand WSDL](https://msdn.microsoft.com/en-us/library/ms996486.aspx)
+[understand SOAP](https://msdn.microsoft.com/en-us/library/ms995800.aspx)
 
 ### Make SOAP request with curl
 
