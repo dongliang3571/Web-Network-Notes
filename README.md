@@ -1,5 +1,22 @@
 # API-Notes
 
+### Difference between Rest API and Stream API (eg. Twitter API)
+
+https://developer.twitter.com/en/docs/tutorials/consuming-streaming-data
+
+REST / SOAP API work as request and response way. Client send Request to server and server reply back to client as Response [whether in JSON, XML or HTML].
+
+But Streaming API is different in respect of Response. Server continue send Response to client when ever a update is available.
+
+So this is type of socket program where continue stream of response will come to client from server.
+
+eg. twitter streaming API will give you continue stream of responses
+
+REST API won’t maintain a persistent HTTP connection between the client and the server where as a streaming API will maintain a persistent HTTP connection as long as possible. By persistent HTTP connection, I mean, there is a continuous request-response happening between the client and server.
+
+So, in such scenario, the REST API’s will fail to fetch the new instantaneous updates in the server (new tweets as in your query) where as streaming API’s will successfully do it!
+
+
 ## API Proxy
 
 ### Good resource
