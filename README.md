@@ -4,6 +4,8 @@
 
 https://developer.twitter.com/en/docs/tutorials/consuming-streaming-data
 
+https://en.wikipedia.org/wiki/HTTP_persistent_connection
+
 REST / SOAP API work as request and response way. Client send Request to server and server reply back to client as Response [whether in JSON, XML or HTML].
 
 But Streaming API is different in respect of Response. Server continue send Response to client when ever a update is available.
