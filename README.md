@@ -6,6 +6,8 @@ https://developer.twitter.com/en/docs/tutorials/consuming-streaming-data
 
 https://en.wikipedia.org/wiki/HTTP_persistent_connection
 
+https://www.quora.com/What-is-meant-by-streaming-API
+
 REST / SOAP API work as request and response way. Client send Request to server and server reply back to client as Response [whether in JSON, XML or HTML].
 
 But Streaming API is different in respect of Response. Server continue send Response to client when ever a update is available.
@@ -18,6 +20,21 @@ REST API won’t maintain a persistent HTTP connection between the client and th
 
 So, in such scenario, the REST API’s will fail to fetch the new instantaneous updates in the server (new tweets as in your query) where as streaming API’s will successfully do it!
 
+A streaming API differs from the normal REST API in the way that it leaves the HTTP connection open for as long as possible(i.e. "persistent connection"). It pushes data to the client as and when it's available and there is no need for the client to poll the requests to the server for newer data. This approach of maintaining a persistent connection reduces the network latency significantly when a server produces continous stream of data like say, today's social media channels. These APIs are mostly used to read/subscribe to data.
+
+### HTTP Persistent connection VS WebSocket
+
+At the TCP/IP level it looks the same: a socket is open.
+
+But from the browser point of view they are completely different. The keep-alive is for the browser to re-use to request more content (e.g. images, css files, next page on the site). WebSockets is for two-way communication from within your Javascript application code. The server can choose to send content at any time. Your JS application can send data to the server at any time.
+
+Also worth comparing to SSE (aka EventSource), which also allows the server to choose to send content at any time, but is one-way (your JS application has to resort to using XHR when it needs to send more data). (A full comparison of WebSockets and SSE can get very complex, so I'll say no more here, except to say that SSE can often be the correct choice.)
+
+Also compare to Server Push in HTTP/2 (aka SPDY). This is for the server to proactively push files (images, css files, next page on the site), but it is at the browser-level again, not controlled from Javascript
+
+### Chunked transfer encoding
+
+https://en.wikipedia.org/wiki/Chunked_transfer_encoding
 
 ## API Proxy
 
