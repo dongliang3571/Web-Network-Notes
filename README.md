@@ -1,5 +1,11 @@
 # API-Notes
 
+### Comet
+
+Comet is a web application model in which a long-held HTTP request allows a web server to push data to a browser, without the browser explicitly requesting it. Comet is an umbrella term, encompassing multiple techniques for achieving this interaction. All these methods rely on features included by default in browsers, such as JavaScript, rather than on non-default plugins. The Comet approach differs from the original model of the web, in which a browser requests a complete web page at a time.
+
+The use of Comet techniques in web development predates the use of the word Comet as a neologism for the collective techniques. Comet is known by several other names, including **Ajax Push**, **Reverse Ajax**, **Two-way-web**, **HTTP Streaming**, and **HTTP server push** among others. The term Comet is not an acronym, but was coined by Alex Russell in his 2006 blog post Comet: Low Latency Data for the Browser.
+
 ### Difference between Rest API and Stream API (eg. Twitter API)
 
 https://developer.twitter.com/en/docs/tutorials/consuming-streaming-data
