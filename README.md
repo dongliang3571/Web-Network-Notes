@@ -6,6 +6,10 @@ Comet is a web application model in which a long-held HTTP request allows a web 
 
 The use of Comet techniques in web development predates the use of the word Comet as a neologism for the collective techniques. Comet is known by several other names, including **Ajax Push**, **Reverse Ajax**, **Two-way-web**, **HTTP Streaming**, and **HTTP server push** among others. The term Comet is not an acronym, but was coined by Alex Russell in his 2006 blog post Comet: Low Latency Data for the Browser.
 
+### Difference between server-sent events and websocket
+
+https://stackoverflow.com/questions/5195452/websockets-vs-server-sent-events-eventsource
+
 ### Server-sent events
 
 This is long-polling mechanism
