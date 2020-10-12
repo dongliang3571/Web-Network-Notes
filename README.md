@@ -265,3 +265,11 @@ where
 - `ipad` is the inner padding (0x363636…3636, one-block-long hexadecimal constant).
 
 Another video demostrates HMAC, https://www.youtube.com/watch?v=0628oUIssFA
+
+## SAML
+
+https://www.varonis.com/blog/what-is-saml/#:~:text=Security%20Assertion%20Markup%20Language%20(SAML,log%20into%20many%20different%20websites.
+
+## Single sign-on(SSO)
+
+Utilize SAML to pass authentication information between service provider and identity provider
