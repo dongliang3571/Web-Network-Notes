@@ -224,9 +224,11 @@ or:
 
 [AWS S3 Rest API]http://czak.pl/2015/09/15/s3-rest-api-with-curl.html
 
-## Hash Algorithm Aka Hash Function
+## Authentication and authorization
 
-### definitions
+### Hash Algorithm Aka Hash Function
+
+#### definitions
 
 Hash algorithms are used widely in computer science field. But with difference purposes, different hash algorithm is applied. For example, 
 hash function that computes hash key for data structure hashtable in programming languages is different from hash function that computes (checksum)[https://en.wikipedia.org/wiki/Checksum] to verify data integrity. The type of hash algorithm like checksum algorithm is also called (crytographic hash alogorithm)[https://en.wikipedia.org/wiki/Cryptographic_hash_function]. It widely used for check message integrity in network. Crytographic hash alogorithm includes MD5, (SHA0, SHA1, SHA2, SHA3)[https://en.wikipedia.org/wiki/Secure_Hash_Algorithms] and so on. 
@@ -239,7 +241,7 @@ The ideal cryptographic hash function has five main properties:
 - a small change to a message should change the hash value so extensively that the new hash value appears uncorrelated with the old hash value
 - it is infeasible to find two different messages with the same hash value
 
-## MAC, HMAC
+### MAC, HMAC
 
 In cryptography, a **message authentication code (MAC)**, sometimes known as a tag, is a short piece of information used to authenticate a message. One of the famous one is **(keyed-hash message authentication code (HMAC))[https://www.youtube.com/watch?v=NU923LkfuvE]**.
 
@@ -266,10 +268,24 @@ where
 
 Another video demostrates HMAC, https://www.youtube.com/watch?v=0628oUIssFA
 
-## SAML
+### SAML
 
 https://www.varonis.com/blog/what-is-saml/#:~:text=Security%20Assertion%20Markup%20Language%20(SAML,log%20into%20many%20different%20websites.
 
-## Single sign-on(SSO)
+### Single sign-on(SSO)
 
 Utilize SAML to pass authentication information between service provider and identity provider
+
+### Role-based authorization
+
+A user gets assigned to one or more roles through which the user gets access rights. Also, by assigning a user to a role, the user immediately gets all the access rights defined for that role.
+
+### Claim-based authorization
+
+https://docs.microsoft.com/en-us/aspnet/core/security/authorization/claims?view=aspnetcore-3.1
+
+When an identity is created it may be assigned one or more claims issued by a trusted party. A claim is a name value pair that represents what the subject is, not what the subject can do. For example, you may have a driver's license, issued by a local driving license authority. Your driver's license has your date of birth on it. In this case the claim name would be DateOfBirth, the claim value would be your date of birth, for example 8th June 1970 and the issuer would be the driving license authority. Claims based authorization, at its simplest, checks the value of a claim and allows access to a resource based upon that value. For example if you want access to a night club the authorization process might be:
+
+The door security officer would evaluate the value of your date of birth claim and whether they trust the issuer (the driving license authority) before granting you access.
+
+An identity can contain multiple claims with multiple values and can contain multiple claims of the same type.
