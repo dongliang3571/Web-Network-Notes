@@ -218,6 +218,17 @@ or:
 
 `PUT  /expense-report/10929`
 
+## Jumpboxes vs. Bastion Hosts
+
+Both bastion hosts and jumpboxes function similarly: they segregate between one private network or server group and external traffic. Usually you connect to them through SSH or RDP. They each create a single point of entry to a cluster, but their intended purpose and architecture are subtly different in practice.
+
+A **jump server** is a virtual machine that is used to manage other systems. It is sometimes called a “pivot server” for this reason: once you are logged in, you can “pivot” to the other servers. It is usually security hardened and treated as the single entryway to a server group from within your security zone, or inside the overall network. A jump server is a “bridge” between two trusted networks. The two security zones are dissimilar but both are controlled.
+
+A **bastion host** is also treated with special security considerations and connects to a secure zone, but it sits outside of your network security zone. The bastion host is intended to provide access to a private network from external networks such as the public internet. Email servers, web servers, security honeypots, DNS servers, FTP servers, VPNs, firewalls, and security appliances are sometimes considered bastion hosts.
+
+In both cases, the connecting server can be treated as a single audit point for logging access to the subnetworks. Both jump servers and bastion hosts are considered weak points and careful attention must be given to keep them up to date and monitored.
+
+
 ## AWS
 
 [AWS](https://www.youtube.com/watch?v=X0wU-HTjv0g)
