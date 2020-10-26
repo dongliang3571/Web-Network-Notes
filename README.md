@@ -300,3 +300,7 @@ When an identity is created it may be assigned one or more claims issued by a tr
 The door security officer would evaluate the value of your date of birth claim and whether they trust the issuer (the driving license authority) before granting you access.
 
 An identity can contain multiple claims with multiple values and can contain multiple claims of the same type.
+
+## SaltStack
+
+https://www.youtube.com/watch?v=z6jUo17iwIA
