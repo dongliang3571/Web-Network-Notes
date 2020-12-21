@@ -1,6 +1,6 @@
 # API-Notes
 
-## Comet
+### Comet
 
 Comet is a web application model in which a long-held HTTP request allows a web server to push data to a browser, without the browser explicitly requesting it. Comet is an umbrella term, encompassing multiple techniques for achieving this interaction. All these methods rely on features included by default in browsers, such as JavaScript, rather than on non-default plugins. The Comet approach differs from the original model of the web, in which a browser requests a complete web page at a time.
 
@@ -300,3 +300,22 @@ When an identity is created it may be assigned one or more claims issued by a tr
 The door security officer would evaluate the value of your date of birth claim and whether they trust the issuer (the driving license authority) before granting you access.
 
 An identity can contain multiple claims with multiple values and can contain multiple claims of the same type.
+
+## X.509, certificate, CA, keystore, truststore, private key
+
+#### keystore vs truststore
+
+https://www.educative.io/edpresso/keystore-vs-truststore
+
+**Keystore** is used to store private key and identity certificates that a specific program should present to both parties (server or client) for verification.
+
+**Truststore** is used to store certificates from Certified Authorities (CA) that verify the certificate presented by the server in SSL connection.
+
+| Keystore	| Truststore |
+|-----------|------------|
+|Keystore stores your credential. (server or client) |	Truststore stores others credentials (CA)|
+|Keystore is needed when you are setting up the server side on SSL	| Truststore setup is required for the successful connection at the client side|
+|Client will store its private key and identify certificate on Keystore	| Server will authenticate the client against the certificate stored on the server’s Truststore |
+|`javax.net.ssl.keyStore` is used to specify Keystore	| `javax.net.ssl.trustStore` is used to specify Truststore.|
+|Keystore passwords are stored in plaintext that is only readable by the specific group.	| Truststore passwords are stored in plaintext that can be read by everyone.|
+|Keystore contains private and sensitive information	| Truststore doesn’t contain private and sensitive information|
