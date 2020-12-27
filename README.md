@@ -1,23 +1,39 @@
 # Web-Network-Notes
 
-### Comet
+### Websocket, Comet, long-polling, persistent connection
+
+#### Comet
 
 Comet is a web application model in which a long-held HTTP request allows a web server to push data to a browser, without the browser explicitly requesting it. Comet is an umbrella term, encompassing multiple techniques for achieving this interaction. All these methods rely on features included by default in browsers, such as JavaScript, rather than on non-default plugins. The Comet approach differs from the original model of the web, in which a browser requests a complete web page at a time.
 
 The use of Comet techniques in web development predates the use of the word Comet as a neologism for the collective techniques. Comet is known by several other names, including **Ajax Push**, **Reverse Ajax**, **Two-way-web**, **HTTP Streaming**, and **HTTP server push** among others. The term Comet is not an acronym, but was coined by Alex Russell in his 2006 blog post Comet: Low Latency Data for the Browser.
 
-### Difference between server-sent events and websocket
+#### Websocket
 
-https://stackoverflow.com/questions/5195452/websockets-vs-server-sent-events-eventsource
+The WebSocket API is an advanced technology that makes it possible to open a two-way interactive communication session between the user's browser and a server. With this API, you can send messages to a server and receive event-driven responses without having to poll the server for a reply.
 
-### Server-sent events
+#### Server-sent events
 
 This is long-polling mechanism
 
 https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events
 
+#### Difference between server-sent events and websocket
 
-### Difference between Rest API and Stream API (eg. Twitter API)
+https://stackoverflow.com/questions/5195452/websockets-vs-server-sent-events-eventsource
+
+#### HTTP Persistent connection VS WebSocket
+
+At the TCP/IP level it looks the same: a socket is open.
+
+But from the browser point of view they are completely different. The keep-alive is for the browser to re-use to request more content (e.g. images, css files, next page on the site). WebSockets is for two-way communication from within your Javascript application code. The server can choose to send content at any time. Your JS application can send data to the server at any time.
+
+Also worth comparing to SSE (aka EventSource), which also allows the server to choose to send content at any time, but is one-way (your JS application has to resort to using XHR when it needs to send more data). (A full comparison of WebSockets and SSE can get very complex, so I'll say no more here, except to say that SSE can often be the correct choice.)
+
+Also compare to Server Push in HTTP/2 (aka SPDY). This is for the server to proactively push files (images, css files, next page on the site), but it is at the browser-level again, not controlled from Javascript
+
+
+#### Difference between Rest API and Stream API (eg. Twitter API)
 
 https://developer.twitter.com/en/docs/tutorials/consuming-streaming-data
 
@@ -39,23 +55,14 @@ So, in such scenario, the REST API’s will fail to fetch the new instantaneous 
 
 A streaming API differs from the normal REST API in the way that it leaves the HTTP connection open for as long as possible(i.e. "persistent connection"). It pushes data to the client as and when it's available and there is no need for the client to poll the requests to the server for newer data. This approach of maintaining a persistent connection reduces the network latency significantly when a server produces continous stream of data like say, today's social media channels. These APIs are mostly used to read/subscribe to data.
 
-### HTTP Persistent connection VS WebSocket
 
-At the TCP/IP level it looks the same: a socket is open.
-
-But from the browser point of view they are completely different. The keep-alive is for the browser to re-use to request more content (e.g. images, css files, next page on the site). WebSockets is for two-way communication from within your Javascript application code. The server can choose to send content at any time. Your JS application can send data to the server at any time.
-
-Also worth comparing to SSE (aka EventSource), which also allows the server to choose to send content at any time, but is one-way (your JS application has to resort to using XHR when it needs to send more data). (A full comparison of WebSockets and SSE can get very complex, so I'll say no more here, except to say that SSE can often be the correct choice.)
-
-Also compare to Server Push in HTTP/2 (aka SPDY). This is for the server to proactively push files (images, css files, next page on the site), but it is at the browser-level again, not controlled from Javascript
-
-### Chunked transfer encoding
+#### Chunked transfer encoding
 
 https://en.wikipedia.org/wiki/Chunked_transfer_encoding
 
-## API Proxy
+### API Proxy
 
-### Good resource
+#### Good resource
 
 1. [The battle for your api proxy](http://blog.apievangelist.com/2011/06/11/the-battle-for-your-api-proxy/)
 
@@ -85,9 +92,9 @@ Two kind of API proxy
 
 ![proxy_connector](https://github.com/dongliang3571/API-Proxy-Notes/blob/master/screenshots/proxy_connector.png?raw=true "proxy_connector")
 
-## OAUTH(Open Authentication)
+### OAUTH(Open Authentication)
 
-### Good resource
+#### Good resource
 
 1. [How is OAuth 2 different from OAuth 1?](http://stackoverflow.com/questions/4113934/how-is-oauth-2-different-from-oauth-1)
 
@@ -95,19 +102,23 @@ Two kind of API proxy
 
 OAuth allows notifying a resource provider (e.g. Facebook) that the resource owner (e.g. you) grants permission to a third-party (e.g. a Facebook Application) access to their information (e.g. the list of your friends).
 
-## SOAP, WSDL, REST
+### SOAP, WSDL, REST
+
+#### WSDL
 
 A **WSDL** is an XML document that describes a web service. It actually stands for Web Services Description Language.
 
 **SOAP** is an XML-based protocol that lets you exchange info over a particular protocol (can be HTTP or SMTP, for example) between applications. It stands for Simple Object Access Protocol and uses XML for its messaging format to relay the information. [good resource](http://www.doublehops.com/2009/07/07/quick-tutorial-on-getting-started-with-soap-in-php/comment-page-1/)
 
   "You use SOAP just the same way that you would any PHP class. However, in this case the class does not exist in the local applications file system, but at a remote site accessed over http." ... "If we think of using a SOAP service as just another PHP class then the WSDL document is a list of all the available class methods and properties. "
-  
+
 [understand WSDL](https://msdn.microsoft.com/en-us/library/ms996486.aspx)
+
+#### SOAP
 
 [understand SOAP](https://msdn.microsoft.com/en-us/library/ms995800.aspx)
 
-### Make SOAP request with curl
+**Make SOAP request with curl**
 
 Let’s create a SOAP envelope as below which is the SOAP request to be sent via curl. Create a file with the below content named “request.xml”. The SOAP envelope and the SOAP request parameters depend on your web service.
 
@@ -137,6 +148,8 @@ Below mentioned should be replaced according to your web service.
 
 See the example below to get an idea.
 
+#### REST
+
 **REST** is an architectural style of networked systems and stands for Representational State Transfer. It's not a standard itself, but does use standards such as HTTP, URL, XML, etc.
 
 An architectural style called REST (Representational State Transfer) advocates that web applications should use HTTP as it was originally envisioned. Lookups should use GET requests. PUT, POST, and DELETE requests should be used for *mutation, creation, and deletion respectively *.
@@ -158,9 +171,9 @@ would not be appropriate. GET requests should be idempotent. That is, issuing a 
 
 (How I Explained REST to My Wife)[http://web.archive.org/web/20130116005443/http://tomayko.com/writings/rest-to-my-wife]
 
-REST provides a definition of a resource, which is what those things point to. A web page is a representation of a resource. 
+REST provides a definition of a resource, which is what those things point to. A web page is a representation of a resource.
 
-### Difference between SOAP and REST
+#### Difference between SOAP and REST
 
 https://stackoverflow.com/questions/19884295/soap-vs-rest-differences
 
@@ -170,7 +183,7 @@ A **REST** client is more like a browser. It's a generic client that knows how t
 
 In short, REST use `GET`, `PUT`, `POST`, `DELETE` as verbs(operations), but SOAP has to use it's own defined operations, could be `addUser`, `deleteUser`, `something else`.
 
-### what is hypermedia , hypermedia controls, hypermedia formats
+### What is hypermedia , hypermedia controls, hypermedia formats
 
 There's a lot of confusion about this, because most applications that call themselves REST don't use hypermedia and aren't REST at all.
 
@@ -190,13 +203,13 @@ When you wrap everything together -- the underlying protocol, HTTP; the contract
 
 Needless to say, 99% of the so-called REST APIs you'll find around the internet don't follow all of this. Most of them are simply HTTP APIs that follow some of the REST constraints, sometimes because they don't really need all of them, sometimes because that's what the developers thought REST really is.
 
-## GET, POST, PUT and DELETE
+### GET, POST, PUT and DELETE
 
 There seems to be quite a bit of misunderstanding here. PUT versus POST is not really about replace versus create, but rather about idempotency and resource naming.
 
-PUT is an idempotent operation. With it, you give the name of a resource and an entity to place as that resource's content (possibly with server-generated additions). Crucially, doing the operation twice in a row should result in the same thing as if it was done just once or done 20 times, for some fairly loose definition of “the same thing” (it doesn't have to be byte-for-byte identical, but the information that the user supplied should be intact). You wouldn't ever want a PUT to cause a financial transaction to be triggered.
+**PUT** is an **idempotent** operation. With it, you give the name of a resource and an entity to place as that resource's content (possibly with server-generated additions). Crucially, doing the operation twice in a row should result in the same thing as if it was done just once or done 20 times, for some fairly loose definition of “the same thing” (it doesn't have to be byte-for-byte identical, but the information that the user supplied should be intact). You wouldn't ever want a PUT to cause a financial transaction to be triggered.
 
-POST is a non-idempotent operation. You don't need to give the name of the resource which you're looking to have created (nor does a POST have to create; it could de-duplicate resources if it wished). POST is often used to implement “create a resource with a newly-minted name and tell me what the name is” — the lack of idempotency implied by “newly-minted name” fits with that. Where a new resource is created, sending back the locator for the resource in a Location header is entirely the right thing to do.
+**POST** is a **non-idempotent** operation. You don't need to give the name of the resource which you're looking to have created (nor does a POST have to create; it could de-duplicate resources if it wished). POST is often used to implement “create a resource with a newly-minted name and tell me what the name is” — the lack of idempotency implied by “newly-minted name” fits with that. Where a new resource is created, sending back the locator for the resource in a Location header is entirely the right thing to do.
 
 Now, if you are taking the policy position that clients should never create resource names, you then get POST being the perfect fit for creation (though theoretically it could do anything based on the supplied entity) and PUT being how to do update. For many RESTful applications that makes a lot of sense, but not all; if the model being presented to the user was of a file system, having the user supply the resource name makes a huge amount of sense and PUT becomes the main creation operation (and POST becomes delegated to less common things like making an empty directory and so on; WebDAV reduces the need for POST even further).
 
@@ -204,9 +217,9 @@ The summary: Don't think in terms of create/update, but rather in terms of who m
 
 Better is to choose between PUT and POST based on idempotence of the action.
 
-PUT implies putting a resource - completely replacing whatever is available at the given URL with a different thing. By definition, a PUT is idempotent. Do it as many times as you like, and the result is the same. x=5 is idempotent. You can PUT a resource whether it previously exists, or not (eg, to Create, or to Update)!
+**PUT** implies putting a resource - completely replacing whatever is available at the given URL with a different thing. By definition, a PUT is idempotent. Do it as many times as you like, and the result is the same. x=5 is idempotent. You can PUT a resource whether it previously exists, or not (eg, to Create, or to Update)!
 
-POST updates a resource, adds a subsidiary resource, or causes a change. A POST is not idempotent, in the way that x++ is not idempotent.
+**POST** updates a resource, adds a subsidiary resource, or causes a change. A POST is not idempotent, in the way that x++ is not idempotent.
 
 By this argument, PUT is for creating when you know the URL of the thing you will create. POST can be used to create when you know the URL of the "factory" or manager for the category of things you want to create.
 
@@ -218,7 +231,7 @@ or:
 
 `PUT  /expense-report/10929`
 
-## Jumpboxes vs. Bastion Hosts
+### Jumpboxes vs. Bastion Hosts
 
 Both bastion hosts and jumpboxes function similarly: they segregate between one private network or server group and external traffic. Usually you connect to them through SSH or RDP. They each create a single point of entry to a cluster, but their intended purpose and architecture are subtly different in practice.
 
@@ -229,20 +242,20 @@ A **bastion host** is also treated with special security considerations and conn
 In both cases, the connecting server can be treated as a single audit point for logging access to the subnetworks. Both jump servers and bastion hosts are considered weak points and careful attention must be given to keep them up to date and monitored.
 
 
-## AWS
+### AWS
 
 [AWS](https://www.youtube.com/watch?v=X0wU-HTjv0g)
 
 [AWS S3 Rest API]http://czak.pl/2015/09/15/s3-rest-api-with-curl.html
 
-## Authentication and authorization
+### Authentication and authorization
 
-### Hash Algorithm Aka Hash Function
+#### Hash Algorithm Aka Hash Function
 
-#### definitions
+**Definitions:**
 
-Hash algorithms are used widely in computer science field. But with difference purposes, different hash algorithm is applied. For example, 
-hash function that computes hash key for data structure hashtable in programming languages is different from hash function that computes (checksum)[https://en.wikipedia.org/wiki/Checksum] to verify data integrity. The type of hash algorithm like checksum algorithm is also called (crytographic hash alogorithm)[https://en.wikipedia.org/wiki/Cryptographic_hash_function]. It widely used for check message integrity in network. Crytographic hash alogorithm includes MD5, (SHA0, SHA1, SHA2, SHA3)[https://en.wikipedia.org/wiki/Secure_Hash_Algorithms] and so on. 
+Hash algorithms are used widely in computer science field. But with difference purposes, different hash algorithm is applied. For example,
+hash function that computes hash key for data structure hashtable in programming languages is different from hash function that computes (checksum)[https://en.wikipedia.org/wiki/Checksum] to verify data integrity. The type of hash algorithm like checksum algorithm is also called (crytographic hash alogorithm)[https://en.wikipedia.org/wiki/Cryptographic_hash_function]. It widely used for check message integrity in network. Crytographic hash alogorithm includes MD5, (SHA0, SHA1, SHA2, SHA3)[https://en.wikipedia.org/wiki/Secure_Hash_Algorithms] and so on.
 
 The ideal cryptographic hash function has five main properties:
 
@@ -279,19 +292,24 @@ where
 
 Another video demostrates HMAC, https://www.youtube.com/watch?v=0628oUIssFA
 
-### SAML
+### SAML, SSO
+
+#### SAML
 
 https://www.varonis.com/blog/what-is-saml/#:~:text=Security%20Assertion%20Markup%20Language%20(SAML,log%20into%20many%20different%20websites.
 
-### Single sign-on(SSO)
+#### Single sign-on(SSO)
 
 Utilize SAML to pass authentication information between service provider and identity provider
 
-### Role-based authorization
+
+### Role-based authorization, Claim-based authorization
+
+#### Role-based authorization
 
 A user gets assigned to one or more roles through which the user gets access rights. Also, by assigning a user to a role, the user immediately gets all the access rights defined for that role.
 
-### Claim-based authorization
+#### Claim-based authorization
 
 https://docs.microsoft.com/en-us/aspnet/core/security/authorization/claims?view=aspnetcore-3.1
 
@@ -301,7 +319,7 @@ The door security officer would evaluate the value of your date of birth claim a
 
 An identity can contain multiple claims with multiple values and can contain multiple claims of the same type.
 
-## X.509, certificate, CA, keystore, truststore, private key
+### X.509, certificate, CA, keystore, truststore, private key, HTTPS
 
 #### keystore vs truststore
 
