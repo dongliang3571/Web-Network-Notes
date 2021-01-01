@@ -319,7 +319,7 @@ The door security officer would evaluate the value of your date of birth claim a
 
 An identity can contain multiple claims with multiple values and can contain multiple claims of the same type.
 
-### X.509, certificate, CA, keystore, truststore, private key, HTTPS
+### X.509, certificate, CA, keystore, truststore, private key, HTTPS, TLS/SSL, Crytography
 
 #### keystore vs truststore
 
@@ -337,3 +337,41 @@ https://www.educative.io/edpresso/keystore-vs-truststore
 |`javax.net.ssl.keyStore` is used to specify Keystore	| `javax.net.ssl.trustStore` is used to specify Truststore.|
 |Keystore passwords are stored in plaintext that is only readable by the specific group.	| Truststore passwords are stored in plaintext that can be read by everyone.|
 |Keystore contains private and sensitive information	| Truststore doesn’t contain private and sensitive information|
+
+
+#### HTTPS, TSL/SSL, CSR, CRT
+
+https://www.youtube.com/watch?v=T4Df5_cojAs
+
+https://github.com/k8sp/tls
+
+![SSL signing](https://d1smxttentwwqu.cloudfront.net/wp-content/uploads/2019/07/ca-diagram-b.png)
+
+**CA** - Certificate Authority
+
+**CSR** - A CSR or Certificate Signing request is a block of encoded text that is given to a Certificate Authority when applying for an SSL Certificate. A certificate authority(CA) will use a CSR to create your SSL certificate https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html
+
+  ```bash
+  # generate CSR and private key using openssl
+  openssl req -new -newkey rsa:2048 -nodes -out servername.csr -keyout servername.key
+
+  # decode CSR
+  openssl req -in server.csr -noout -text
+  ```
+
+**CRT** - is a certicate consisting of CRS and signed CRS(signature), it's signed by a CA.
+
+**SSL CRT** - is a CRT
+
+**X.509 CRT** - is a CRT format, SSL CRT uses this format
+
+
+#### Keytool vs Openssl
+
+In short, they're both crypto key generation tools, but keytool has the additional feature of manipulating Java's preferred key storage file format, the KeyStore.
+
+**Keytool** is a tool that comes with Java that works with KeyStores - it can create KeyStores and manipulate keys and certificates inside them. It can also create keys and sign certificates. So it is both a key generation and a KeyStore-file-administration tool.
+
+**OpenSSL** works with standard formats (PEM/CER/CRT/PKCS/etc) but does not manipulate KeyStore files. It is possible to generate a key and/or certificate with OpenSSL, and then import that key/cert into a KeyStore using keytool, but you can't put the key/cert into the KeyStore directly using OpenSSL.
+
+Java strongly prefers to work with keys and certificates that are stored in a KeyStore (also called a TrustStore when it's only got certificates in it). It is possible, but not trivial, to get Java to work with straightforward PEM/CER/CRT/PKCS/etc files, so for all intents and purposes if you're coding crypto in Java you're going to use a KeyStore.
