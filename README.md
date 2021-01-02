@@ -349,7 +349,7 @@ https://github.com/k8sp/tls
 
 **CA** - Certificate Authority
 
-**CSR** - A CSR or Certificate Signing request is a block of encoded text that is given to a Certificate Authority when applying for an SSL Certificate. A certificate authority(CA) will use a CSR to create your SSL certificate https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html
+**CSR** - A CSR or Certificate Signing request is a block of encoded text that is given to a Certificate Authority when applying for an SSL Certificate. A certificate authority(CA) will use a CSR to create your SSL certificate. The actual format is PKCS10 which is defined in RFC 2986. It includes some/all of the key details of the requested certificate such as subject, organization, state, whatnot, as well as the public key of the certificate to get signed. These get signed by the CA and a certificate is returned. The returned certificate is the public certificate (which includes the public key but not the private key), which itself can be in a couple of formats. https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html
 
   ```bash
   # generate CSR and private key using openssl
@@ -359,11 +359,37 @@ https://github.com/k8sp/tls
   openssl req -in server.csr -noout -text
   ```
 
-**CRT** - is a certicate consisting of CRS and signed CRS(signature), it's signed by a CA.
+**CRT** - is a public key certificate consisting of CRS and signed CRS(signature), it's signed by a CA. Also known as a digital certificate or identity certificate, is an electronic document used to prove the ownership of a public key.
 
-**SSL CRT** - is a CRT
+**SSL CRT** - a CRT used in SSL
 
-**X.509 CRT** - is a CRT format, SSL CRT uses this format
+**X.509 CRT** - is a standard defining the format of public key certificate. All X.509 objects are transferrable and are presented by using Abstract Syntax Notation One (ASN.1)
+
+**Abstract Syntax Notation One (ASN.1)** - is a standard interface description language for defining data structures that can be serialized and deserialized in a cross-platform way
+
+**PEM** - is an encoding, X.509 is usually encoded in PEM. Literally any data can be represented in PEM format. It's governed by RFCs, its used preferentially by open-source software. It can have a variety of extensions (.pem, .key, .cer, .cert, more)
+
+  - **.key** - This is a PEM formatted file containing just the private-key of a specific certificate and is merely a conventional name and not a standardized one. In Apache installs, this frequently resides in /etc/ssl/private. The rights on these files are very important, and some programs will refuse to load these certificates if they are set wrong.
+
+  - **.pem** - Defined in RFCs 1421 through 1424, this is a container format that may include just the public certificate (such as with Apache installs, and CA certificate files /etc/ssl/certs), or may include an entire certificate chain including public key, private key, and root certificates. It can sometimes be used to encode a CSR
+
+  - **.cert .cer .crt** - A .pem (or rarely .der) formatted file with a different extension, one that is recognized by Windows Explorer as a certificate, which .pem is not.
+
+
+**DER** - The parent format of PEM. It's useful to think of it as a binary version of the base64-encoded PEM file. Not routinely used very much outside of Windows.
+
+**PKCS7** - is a type of encoding just like PEM. It's an open standard used by Java and supported by Windows. Does not contain private key material.
+
+  - **.p7b .keystore** - Defined in RFC 2315 as PKCS number 7, this is a format used by Windows for certificate interchange. Java understands these natively, and often uses .keystore as an extension instead. Unlike .pem style certificates, this format has a defined way to include certification-path certificates.
+
+**PKCS#12** - is also a type of encoding just like PEM, but with added secure feature
+
+ - **.pkcs12 .pfx .p12** - Originally defined by RSA in the Public-Key Cryptography Standards (abbreviated PKCS), the "12" variant was originally enhanced by Microsoft, and later submitted as RFC 7292. This is a passworded container format that contains both public and private certificate pairs. Unlike .pem files, this container is fully encrypted. Openssl can turn this into a .pem file with both public and private keys: openssl pkcs12 -in file-to-convert.p12 -out converted-file.pem -nodes
+
+An analogy to understand these terms:
+
+- A X.509 CRT is deserialized in ASN.1 and encoded in PEM and stored in a file
+- a http request is descriablized in Json and encoded in UTF-8 and stored in a file
 
 
 #### Keytool vs Openssl
