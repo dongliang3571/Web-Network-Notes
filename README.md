@@ -265,7 +265,19 @@ The ideal cryptographic hash function has five main properties:
 - a small change to a message should change the hash value so extensively that the new hash value appears uncorrelated with the old hash value
 - it is infeasible to find two different messages with the same hash value
 
-### MAC, HMAC
+### Encryption
+
+#### Symmertric encrytion
+
+Both party shares a key and encryt and decrypt all messages using the same key
+
+#### Asymmetric encryption
+
+- **public key encryption** - there is a public key and a private key, they are different
+  - **Encrypting** - When encrypting, you use their public key to write a message and they use their private key to read it.
+  - **Signing** - When signing, you use your private key to write message's signature, and they use your public key to check if it's really yours.
+
+#### MAC, HMAC
 
 In cryptography, a **message authentication code (MAC)**, sometimes known as a tag, is a short piece of information used to authenticate a message. One of the famous one is **(keyed-hash message authentication code (HMAC))[https://www.youtube.com/watch?v=NU923LkfuvE]**.
 
@@ -345,7 +357,45 @@ https://www.youtube.com/watch?v=T4Df5_cojAs
 
 https://github.com/k8sp/tls
 
+#### How HTTPS/TSL works between browser and http server
+
+1. Http server creates a CRS using tools like openssl and ask a legit CA to sign it with CA private key.
+2. CA agrees and sign the CRS and return it back as a TSL certificate(CA signed certificate), which is a combination of a CRS and signed CRS
+3. The http server installs the certificate
+4. When a browser requests a https resource, TSL certifcate is send to browser first
+5. The browser checks the CA from the TSL certificate and go to the CA and use the CA public key to verify the signature in the TLS certificate and if decrypted CRS is same as CRS sent from http server, it's legit.
+6. Once verification is done, the browser creates a new secret and encrypted with the public key in the http server CRS
+7. The http server gets the encrypted secret and decrypt it with its private key.
+8. Now only the browser and the http server has the secret
+9. They can start communicate with using the secret thru symmetrical encryption.
+
+#### CA signing
+
 ![SSL signing](https://d1smxttentwwqu.cloudfront.net/wp-content/uploads/2019/07/ca-diagram-b.png)
+
+An example of a CA signed certificate
+
+```bash
+$ cat /tmp/stackoverflow-certs.crt
+-----BEGIN CERTIFICATE-----
+MIIIPDCCBySgAwIBAgIQB2XGTnTlkdaAOcoqhHVj8DANBgkqhkiG9w0BAQsFADBw
+MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
+...
+aVnw9vahqf7nKHHcC2VRTUgkQfn9yDmmBOo0nQ8Xgfpd65/PaxVfBnuKfEkXBfpM
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+MIIEsTCCA5mgAwIBAgIQBOHnpNxc8vNtwCtCuF0VnzANBgkqhkiG9w0BAQsFADBs
+...
+/D6q1UEL2tU2ob8cbkdJf17ZSHwD2f2LSaCYJkJA69aSEaRkCldUxPUd1gJea6zu
+xICaEnL6VpPX/78whQYwvwt/Tv9XBZ0k7YXDK/umdaisLRbvfXknsuvCnQsH6qqF
+0wGjIChBWUMo0oHjqvbsezt3tkBigAVBRQHvFwY+3sAzm2fTYS5yh+Rp/BIAV0Ae
+cPUeybQ=
+-----END CERTIFICATE-----
+```
+
+#### TSL/SSl certificate verification
+
+https://kulkarniamit.github.io/whatwhyhow/howto/verify-ssl-tls-certificate-signature.html
 
 **CA** - Certificate Authority
 
