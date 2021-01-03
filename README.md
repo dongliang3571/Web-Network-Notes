@@ -357,17 +357,77 @@ https://www.youtube.com/watch?v=T4Df5_cojAs
 
 https://github.com/k8sp/tls
 
-#### How HTTPS/TSL works between browser and http server
+#### How HTTPS/TLS works between browser and http server
 
-1. Http server creates a CRS using tools like openssl and ask a legit CA to sign it with CA private key.
+1. Http server creates a CRS using tools like openssl and ask a CA to sign it with CA private key.
 2. CA agrees and sign the CRS and return it back as a TSL certificate(CA signed certificate), which is a combination of a CRS and signed CRS
 3. The http server installs the certificate
 4. When a browser requests a https resource, TSL certifcate is send to browser first
-5. The browser checks the CA from the TSL certificate and go to the CA and use the CA public key to verify the signature in the TLS certificate and if decrypted CRS is same as CRS sent from http server, it's legit.
-6. Once verification is done, the browser creates a new secret and encrypted with the public key in the http server CRS
-7. The http server gets the encrypted secret and decrypt it with its private key.
-8. Now only the browser and the http server has the secret
-9. They can start communicate with using the secret thru symmetrical encryption.
+5. The browser checks the CA from the TSL certificate and all built-in CAs in the browser, make sure the CA from the http server is trusted.
+6. The browser goes to the CA and use the CA public key to verify the signature in the TLS certificate and if verified CRS is same as CRS sent from http server, it's legit.
+7. Once verification is done, the browser creates a new secret and encrypted with the public key in the http server CRS
+8. The http server gets the encrypted secret and decrypt it with its private key.
+9. Now only the browser and the http server has the secret
+10. They can start communicate using the secret thru symmetrical encryption.
+
+#### How HTTPS/TLS works between http server and http server
+
+1. Each of the server creates a CRS using tools like openssl and ask a CA t sign it with CA private key.
+2. CA agrees and sign both CRS and return it back as TSL certificates(CA signed certificate), which is a combination of a CRS and signed CRS.
+3. Both http servers install the certificates
+4. Http server A sends its TSL certificate to http server B, http server B checks the CA from the TSL certificate and all installed CAs in the server, make sure the CA from http server A is trusted.
+5. Http server B will do the same thing
+6. Both http servers verifies each other and both generate a new secret and encryt them with each other's public keys and send to each other.
+7. Both http servers got the secrets and combine two secrets.
+8. Now only these two http servers has the newly combined secret.
+9. They can start comminicate using the secret thru symmetrical encryption
+
+#### HTTPS/TLS in Java server and client
+
+1. On server side, we can use `keytool` to generate a self-signed certificate.
+
+    ```bash
+    java-home/bin/keytool -genkey -alias server-alias -keyalg RSA -keypass password1 -storepass password2 -keystore keystore.jks
+    ```
+    the outout file `keystore.jks` actually contains the self-signed certificate(include CA info) and a private key and a public key
+
+    In an example of Java Spring Boot server config:
+
+    ```bash
+    # The format used for the keystore. It could be set to PKCS12 in case it is a PKCS12 file
+    server.ssl.key-store-type=JKS
+    # The path to the keystore containing the certificate
+    server.ssl.key-store=classpath:keystore/keystore.jks
+    # The password used to generate the certificate
+    server.ssl.key-store-password=password2
+    # The alias mapped to the certificate
+    server.ssl.key-alias=server-alias
+    # enable ssl
+    server.ssl.enabled=true
+    ```
+
+2. Export the generated self-signed certificate(CA) in `keystore.jks` into the file `server.cer`
+
+    ```bash
+    java-home/bin/keytool -export -alias server-alias -storepass password2 -file server.cer -keystore keystore.jks
+    ```
+
+3. Import the generated self-signed certificate(CA) into a truststore file `cacerts.jks` for client
+
+    ```bash
+    java-home/bin/keytool -import -v -trustcacerts -alias server-alias -file server.cer -keystore cacerts.jks -keypass password4 -storepass password3
+    ```
+
+3. On client side, we need to trust the CA for the self-signed certificate by specify the trust store location
+
+    In an example of Java Spring client config:
+
+    ```bash
+    #trust store location
+    trust.store=classpath:keystore/cacerts.jks
+    #trust store password
+    trust.store.password=password3
+    ```
 
 #### CA signing
 
@@ -448,6 +508,13 @@ In short, they're both crypto key generation tools, but keytool has the addition
 
 **Keytool** is a tool that comes with Java that works with KeyStores - it can create KeyStores and manipulate keys and certificates inside them. It can also create keys and sign certificates. So it is both a key generation and a KeyStore-file-administration tool.
 
+  - storepass is used to access the key store
+  - keypass is used to access the particular key pair's private key.
+
 **OpenSSL** works with standard formats (PEM/CER/CRT/PKCS/etc) but does not manipulate KeyStore files. It is possible to generate a key and/or certificate with OpenSSL, and then import that key/cert into a KeyStore using keytool, but you can't put the key/cert into the KeyStore directly using OpenSSL.
 
 Java strongly prefers to work with keys and certificates that are stored in a KeyStore (also called a TrustStore when it's only got certificates in it). It is possible, but not trivial, to get Java to work with straightforward PEM/CER/CRT/PKCS/etc files, so for all intents and purposes if you're coding crypto in Java you're going to use a KeyStore.
+
+**Openssl examples**
+
+https://github.com/k8sp/tls/blob/master/openssl.md#x509
