@@ -453,6 +453,18 @@ cPUeybQ=
 -----END CERTIFICATE-----
 ```
 
+##### Why CA signing is needed?
+
+CA signing was invented because of potential `man in the middle` attack.
+
+Assume that we don't have CA signing. We only have a pair of keys(public and private). A server sends the public key to a client, the client generate a new secret key and encrypted with the server's public key and send it back to server. The server gets the encrypted secret and decrypted with its private key. Now they are the only two parties know the secret and they can communicate safely with the secret using symmetrical encryption.
+
+Everything is good until a hacker comes in. He hijack the server's public key and send to client his own public key. Now he can decrypt client's messages with his own private key. And encrpt it again with server public key to tell server that he is the client. Later the hacker can hijack the secret generated from browser. This is so called `man in the middle` attack.
+
+The attack is able to be launched succesfully is because the client doesn't know weather the public key that was sent from server is indeed the right one. To overcome this issue, we need to find a way to verify that the key is the actual key from server.
+
+In order to verify the key. The key needs to be somehow signed by a trustworthy vendor, in this case, CA is the vendor. A CA uses its private key to sign the server's public key and also release its own public key to public, so that everyone has its public key can verify CA's signature. With this approach, the attacker will not be able to use his own public key because it was not signed by the CA.
+
 #### TSL/SSl certificate verification
 
 https://kulkarniamit.github.io/whatwhyhow/howto/verify-ssl-tls-certificate-signature.html
