@@ -275,7 +275,16 @@ Both party shares a key and encryt and decrypt all messages using the same key
 
 - **public key encryption** - there is a public key and a private key, they are different
   - **Encrypting** - When encrypting, you use their public key to write a message and they use their private key to read it.
-  - **Signing** - When signing, you use your private key to write message's signature, and they use your public key to check if it's really yours.
+  - **Signing** - When signing, you use your private key to write message's signature, and they use your public key to check if it's really yours. It's very similar to encryption
+  https://en.wikipedia.org/wiki/Digital_signature#How_they_work
+  In RSA crypto, when you generate a key pair, it's completely arbitrary which one you choose to be the public key, and which is the private key. If you encrypt with one, you can decrypt with the other - it works in both directions.
+  It's fairly simple to see how you can encrypt a message with the receiver's public key, so that the receiver can decrypt it with their private key.
+  A signature is proof that the signer has the private key that matches some public key. To do this, it would be enough to encrypt the message with that sender's private key, and include the encrypted version alongside the plaintext version. To verify the sender, decrypt the encrypted version, and check that it is the same as the plaintext.
+  Of course, this means that your message is not secret. Anyone can decrypt it, because the public key is well known. But when they do so, they have proved that the creator of the ciphertext has the corresponding private key.
+  However, this means doubling the size of your transmission - plaintext and ciphertext together (assuming you want people who aren't interested in verifying the signature, to read the message). So instead, typically a signature is created by creating a hash of the plaintext. It's important that fake hashes can't be created, so cryptographic hash algorithms such as SHA-2 are used.
+  So:
+    1. To generate a signature, make a hash from the plaintext, encrypt it with your private key, include it alongside the plaintext.
+    2. To verify a signature, make a hash from the plaintext, decrypt the signature with the sender's public key, check that both hashes are the same.
 
 #### MAC, HMAC
 
@@ -360,7 +369,7 @@ https://github.com/k8sp/tls
 #### How HTTPS/TLS works between browser and http server
 
 1. Http server creates a CRS using tools like openssl and ask a CA to sign it with CA private key.
-2. CA agrees and sign the CRS and return it back as a TSL certificate(CA signed certificate), which is a combination of a CRS and signed CRS
+2. CA agrees and sign the CRS and return it back as a TSL certificate(CA signed certificate), which is a combination of a CRS and a digital signature CRS
 3. The http server installs the certificate
 4. When a browser requests a https resource, TSL certifcate is send to browser first
 5. The browser checks the CA from the TSL certificate and all built-in CAs in the browser, make sure the CA from the http server is trusted.
