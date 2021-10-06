@@ -583,3 +583,10 @@ public class Main {
     }
 }
 ```
+
+for CA certificates that are not part of original set of CA certificates shipped with java, you can do
+
+```java
+System.setProperty("javax.net.ssl.trustStore","<path_to_truststore>");
+System.setProperty("javax.net.ssl.trustStorePassword","<truststore_password>");
+```
