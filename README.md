@@ -539,3 +539,47 @@ Java strongly prefers to work with keys and certificates that are stored in a Ke
 **Openssl examples**
 
 https://github.com/k8sp/tls/blob/master/openssl.md#x509
+
+**Java HTTPS**
+
+The Java runtime ships with a default set of CA certificates in a truststore, and the only prerequisite for SSL connections to be successfully established is that the SSL certificate of the server be issued by one of the CAs in the truststore.
+
+```java
+// a java 8 program talks to a https endpoint
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import javax.net.ssl.HttpsURLConnection;
+import java.net.URL;
+import java.util.stream.Collectors;
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        // Create a neat value object to hold the URL
+        URL url = new URL("https://dongliang3571.github.io");
+
+        // Open a connection(?) on the URL(?) and cast the response(??)
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+        String auth = "username:password";
+        String encodedString = Base64.getEncoder().encodeToString(auth.getBytes());
+        String authHeaderValue = "Basic " + new String(encodedString);
+
+        // Now it's "open", we can set the request method, headers etc.
+        connection.setRequestProperty("accept", "application/json");
+        connection.setRequestProperty("Authorization", authHeaderValue);
+
+        // This line makes the request
+        InputStream responseStream = connection.getInputStream();
+
+        String result = new BufferedReader(new InputStreamReader(responseStream)).lines().collect(Collectors.joining("\n"));
+        System.out.println(result);
+    }
+}
+```
