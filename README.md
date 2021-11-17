@@ -1,5 +1,9 @@
 # Web-Network-Notes
 
+### "1195725856" and other mysterious numbers
+
+https://chrisdown.name/2020/01/13/1195725856-and-friends-the-origins-of-mysterious-numbers.html
+
 ### Websocket, Comet, long-polling, persistent connection
 
 #### Comet
